@@ -66,12 +66,6 @@ var (
 		Usage:      "write the default config to trivy-default.yaml",
 		Persistent: true,
 	}
-	NoNoticesFlag = Flag[bool]{
-		Name:       "no-notices",
-		ConfigName: "no-notices",
-		Usage:      "suppress notices about version updates and Trivy announcements",
-		Persistent: true,
-	}
 )
 
 // GlobalFlagGroup composes global flags
@@ -84,7 +78,6 @@ type GlobalFlagGroup struct {
 	Timeout               *Flag[time.Duration]
 	CacheDir              *Flag[string]
 	GenerateDefaultConfig *Flag[bool]
-	NoNotices             *Flag[bool]
 }
 
 // GlobalOptions defines flags and other configuration parameters for all the subcommands
@@ -97,7 +90,6 @@ type GlobalOptions struct {
 	Timeout               time.Duration
 	CacheDir              string
 	GenerateDefaultConfig bool
-	NoNotices             bool
 }
 
 func NewGlobalFlagGroup() *GlobalFlagGroup {
@@ -110,7 +102,6 @@ func NewGlobalFlagGroup() *GlobalFlagGroup {
 		Timeout:               TimeoutFlag.Clone(),
 		CacheDir:              CacheDirFlag.Clone(),
 		GenerateDefaultConfig: GenerateDefaultConfigFlag.Clone(),
-		NoNotices:             NoNoticesFlag.Clone(),
 	}
 }
 
@@ -128,7 +119,6 @@ func (f *GlobalFlagGroup) Flags() []Flagger {
 		f.Timeout,
 		f.CacheDir,
 		f.GenerateDefaultConfig,
-		f.NoNotices,
 	}
 }
 

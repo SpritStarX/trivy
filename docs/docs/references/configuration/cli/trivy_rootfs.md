@@ -65,6 +65,7 @@ trivy rootfs [flags] ROOTDIR
       --list-all-pkgs                     output all packages in the JSON report regardless of vulnerability
       --misconfig-scanners strings        comma-separated list of misconfig scanners to use for misconfiguration scanning (default [azure-arm,cloudformation,dockerfile,helm,kubernetes,terraform,terraformplan-json,terraformplan-snapshot])
       --module-dir string                 specify directory to the wasm modules that will be loaded (default "$HOME/.trivy/modules")
+      --no-notices                        suppress notices about version updates and Trivy announcements
       --no-progress                       suppress progress bar
       --offline-scan                      do not issue API requests to identify dependencies
   -o, --output string                     output file name
@@ -113,7 +114,6 @@ trivy rootfs [flags] ROOTDIR
   -d, --debug                     debug mode
       --generate-default-config   write the default config to trivy-default.yaml
       --insecure                  allow insecure server connections
-      --no-notices                suppress notices about version updates and Trivy announcements
   -q, --quiet                     suppress progress bar and log output
       --timeout duration          timeout (default 5m0s)
   -v, --version                   show version

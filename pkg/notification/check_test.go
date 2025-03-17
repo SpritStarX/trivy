@@ -1,4 +1,4 @@
-package update
+package notification
 
 import (
 	"bytes"
@@ -13,7 +13,7 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-func TestNotifyUpdates(t *testing.T) {
+func TestPrintNotices(t *testing.T) {
 	tests := []struct {
 		name           string
 		currentVersion string
@@ -63,17 +63,17 @@ func TestNotifyUpdates(t *testing.T) {
 			defer server.Close()
 			updatesApi = server.URL
 
-			CheckUpdate(t.Context(), tt.currentVersion, nil)
+			CheckForNotices(t.Context(), tt.currentVersion, nil)
 			require.Eventually(t, responseRecieved.Load, time.Second*5, 500)
 
 			sb := bytes.NewBufferString("")
-			NotifyUpdates(sb)
+			PrintNotices(sb)
 			assert.Equal(t, tt.expectedOutput, sb.String())
 		})
 	}
 }
 
-func TestCheckUpdate(t *testing.T) {
+func TestCheckForNotices(t *testing.T) {
 	tests := []struct {
 		name                  string
 		currentVersion        string
@@ -108,7 +108,7 @@ func TestCheckUpdate(t *testing.T) {
 			defer server.Close()
 			updatesApi = server.URL
 
-			CheckUpdate(t.Context(), tt.currentVersion, nil)
+			CheckForNotices(t.Context(), tt.currentVersion, nil)
 			require.Eventually(t, responseRecieved.Load, time.Second*2, 500)
 			assert.Equal(t, tt.expectedVersion, latestVersion.Trivy.LatestVersion)
 			assert.ElementsMatch(t, tt.expectedAnnouncements, latestVersion.Announcements)

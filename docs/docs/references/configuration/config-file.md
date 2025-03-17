@@ -19,9 +19,6 @@ debug: false
 # Same as '--insecure'
 insecure: false
 
-# Same as '--no-notices'
-no-notices: false
-
 # Same as '--quiet'
 quiet: false
 
@@ -582,6 +579,9 @@ repository:
 ## Scan options
 
 ```yaml
+# Same as '--no-notices'
+no-notices: false
+
 scan:
   # Same as '--detection-priority'
   detection-priority: "precise"

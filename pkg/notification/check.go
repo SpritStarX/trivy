@@ -1,4 +1,4 @@
-package update
+package notification
 
 import (
 	"context"
@@ -38,22 +38,24 @@ var (
 	latestVersion    updateResponse
 )
 
-// CheckUpdate makes a best efforts request to determine the
+// CheckForNotices makes a best efforts request to determine the
 // latest version and any announcements
-func CheckUpdate(ctx context.Context, version string, args []string) {
+func CheckForNotices(ctx context.Context, version string, args []string) {
 	currentVersion = version
+
+	logger := log.WithPrefix("version-check")
 
 	go func() {
 		args = getFlags(args)
 
-		log.Debug("[version] Requesting latest details")
+		logger.Debug("Requesting latest details")
 		client := &http.Client{
 			Timeout: 3 * time.Second,
 		}
 
 		req, err := http.NewRequestWithContext(ctx, http.MethodGet, updatesApi, http.NoBody)
 		if err != nil {
-			log.Warnf("[version] Failed to create a request: %v", err)
+			logger.Warn(fmt.Sprintf("Failed to create a request: %v", err))
 			return
 		}
 		req.Header.Set("-x-trivy-identifier", uniqueIdentifier())
@@ -63,28 +65,27 @@ func CheckUpdate(ctx context.Context, version string, args []string) {
 		req.Header.Set("User-Agent", "trivy/"+currentVersion)
 		resp, err := client.Do(req)
 		if err != nil || resp.StatusCode != http.StatusOK {
-			log.Warnf("[version] Failed to get the latest version: %v", err)
+			logger.Warn(fmt.Sprintf("Failed to get the latest version: %v", err))
 			return
 		}
 
-		log.Debug("[version] Details received, storing for later")
+		logger.Debug("Details received, storing for later")
 		defer resp.Body.Close()
 		if err := json.NewDecoder(resp.Body).Decode(&latestVersion); err != nil {
-			log.Warnf("Failed to decode the response: %v", err)
+			logger.Warn(fmt.Sprintf("Failed to decode the response: %v", err))
 			return
 		}
 		responseRecieved.Store(true)
-		log.Debug("[version] Details ready for printing")
+		logger.Debug("Details ready for printing")
 	}()
 }
 
-// NotifyUpdates prints any announcements or warnings
+// PrintNotices prints any announcements or warnings
 // to the output writer, most likely stderr
-func NotifyUpdates(output io.Writer) {
+func PrintNotices(output io.Writer) {
 	if !responseRecieved.Load() {
 		return
 	}
-
 	var notices []string
 
 	notices = append(notices, latestVersion.Warnings...)
@@ -99,10 +100,12 @@ func NotifyUpdates(output io.Writer) {
 	}
 
 	if len(notices) > 0 {
-		fmt.Fprintf(output, "\n 📣 \x1b[34mNotices:\x1b[0m\n")
+		fmt.Fprintf(output, "\n📣 \x1b[34mNotices:\x1b[0m\n")
 		for _, notice := range notices {
 			fmt.Fprintf(output, "  - %s\n", notice)
 		}
+		fmt.Fprintln(output)
+		fmt.Fprintln(output, "To suppress version checks, run Trivy scans with the --no-notices flag")
 		fmt.Fprintln(output)
 	}
 }

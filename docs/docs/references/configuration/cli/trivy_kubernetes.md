@@ -76,6 +76,7 @@ trivy kubernetes [flags] [CONTEXT]
       --kubeconfig string                 specify the kubeconfig file path to use
       --list-all-pkgs                     output all packages in the JSON report regardless of vulnerability
       --misconfig-scanners strings        comma-separated list of misconfig scanners to use for misconfiguration scanning (default [azure-arm,cloudformation,dockerfile,helm,kubernetes,terraform,terraformplan-json,terraformplan-snapshot])
+      --no-notices                        suppress notices about version updates and Trivy announcements
       --no-progress                       suppress progress bar
       --node-collector-imageref string    indicate the image reference for the node-collector scan job (default "ghcr.io/aquasecurity/node-collector:0.3.1")
       --node-collector-namespace string   specify the namespace in which the node-collector job should be deployed (default "trivy-temp")
@@ -125,7 +126,6 @@ trivy kubernetes [flags] [CONTEXT]
   -d, --debug                     debug mode
       --generate-default-config   write the default config to trivy-default.yaml
       --insecure                  allow insecure server connections
-      --no-notices                suppress notices about version updates and Trivy announcements
   -q, --quiet                     suppress progress bar and log output
       --timeout duration          timeout (default 5m0s)
   -v, --version                   show version
