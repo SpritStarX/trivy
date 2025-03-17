@@ -25,7 +25,7 @@ func TestPrintNotices(t *testing.T) {
 			name:           "New version with no announcements",
 			currentVersion: "0.58.0",
 			latestVersion:  "0.60.0",
-			expectedOutput: "\n 📣 \x1b[34mNotices:\x1b[0m\n  - Version 0.60.0 of Trivy is now available, current version is 0.58.0\n\n",
+			expectedOutput: "\n📣 \x1b[34mNotices:\x1b[0m\n  - Version 0.60.0 of Trivy is now available, current version is 0.58.0\n\nTo suppress version checks, run Trivy scans with the --no-notices flag\n\n",
 		},
 		{
 			name:           "New version with announcements",
@@ -38,7 +38,7 @@ func TestPrintNotices(t *testing.T) {
 					Announcement: "There are some amazing things happening right now!",
 				},
 			},
-			expectedOutput: "\n 📣 \x1b[34mNotices:\x1b[0m\n  - There are some amazing things happening right now!\n  - Version 0.60.0 of Trivy is now available, current version is 0.58.0\n\n",
+			expectedOutput: "\n📣 \x1b[34mNotices:\x1b[0m\n  - There are some amazing things happening right now!\n  - Version 0.60.0 of Trivy is now available, current version is 0.58.0\n\nTo suppress version checks, run Trivy scans with the --no-notices flag\n\n",
 		},
 		{
 			name:           "No new version with announcements",
@@ -51,7 +51,7 @@ func TestPrintNotices(t *testing.T) {
 					Announcement: "There are some amazing things happening right now!",
 				},
 			},
-			expectedOutput: "\n 📣 \x1b[34mNotices:\x1b[0m\n  - There are some amazing things happening right now!\n\n",
+			expectedOutput: "\n📣 \x1b[34mNotices:\x1b[0m\n  - There are some amazing things happening right now!\n\nTo suppress version checks, run Trivy scans with the --no-notices flag\n\n",
 		},
 	}
 

@@ -43,7 +43,7 @@ var (
 func CheckForNotices(ctx context.Context, version string, args []string) {
 	currentVersion = version
 
-	logger := log.WithPrefix("version-check")
+	logger := log.WithPrefix("notices")
 
 	go func() {
 		args = getFlags(args)
