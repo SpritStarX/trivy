@@ -160,9 +160,10 @@ func TestScanFlagGroup_ToOptions(t *testing.T) {
 				NoNotices:   flag.NoNoticesFlag.Clone(),
 			}
 
-			got, err := f.ToOptions(tt.args)
+			flags := flag.Flags{f}
+			got, err := flags.ToOptions(tt.args)
 			tt.assertion(t, err)
-			assert.Equalf(t, tt.want, got, "ToOptions()")
+			assert.Equal(t, tt.want, got.ScanOptions)
 		})
 	}
 }
