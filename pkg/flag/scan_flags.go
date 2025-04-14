@@ -231,6 +231,6 @@ func (f *ScanFlagGroup) ToOptions(opts *Options) error {
 		Distro:            distro,
 		NoNotices:         f.NoNotices.Value(),
 	}
-  
+
 	return nil
 }
